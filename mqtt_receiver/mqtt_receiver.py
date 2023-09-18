@@ -6,6 +6,7 @@ import paho.mqtt.client as mqtt
 from common import _get_mongo_connection, store_latest_readings_for_a_sensor, mqtt_broker_address
 
 
+# Define functions to insert data into MongoDB collections
 def _insert_to_sensors_temperature(sensors_temperature_li):
     try:
         client, db = _get_mongo_connection()
@@ -32,8 +33,11 @@ def _insert_to_sensors_humidity(sensors_humidity_li):
         return {"status": False}
 
 
+# Define the function to receive MQTT messages
+
 def receive_mqtt_message():
     try:
+        # Callback function for handling MQTT messages
         def on_message(client, userdata, message):
 
             payload = message.payload.decode('utf-8')
@@ -41,7 +45,7 @@ def receive_mqtt_message():
 
             data_list = json.loads(payload)
             print(f"Received message: {payload} on topic {topic}")
-
+            # Insert data into MongoDB collections and update Redis
             if topic == topic_sensors_temperature:
                 _insert_to_sensors_temperature(data_list)
                 for payload in data_list:
@@ -57,16 +61,20 @@ def receive_mqtt_message():
                                                                    "value": payload['sensor_id'],
                                                                    "timestamp": payload['timestamp']})
 
+        # MQTT broker configuration
         port = 1883
         topic_sensors_temperature = "sensors_temperature"
         topic_sensors_humidity = "sensors_humidity"
+        # Create an MQTT client and set the message callback
         client = mqtt.Client()
         print("MQTT Client created : ", client)
         print("MQTT Client type : ", type(client))
         client.on_message = on_message
+        # Connect to the MQTT broker and subscribe to topics
         client.connect(mqtt_broker_address, port)
         client.subscribe(topic_sensors_temperature)
         client.subscribe(topic_sensors_humidity)
+        # Start the MQTT loop to listen for messages
         client.loop_forever()
     except Exception as e:
 

@@ -18,13 +18,17 @@ services:
       - "6379:6379"
     network_mode: "host"
   fast-api:
-    image: mqtt-fast-api:latest
+    image: bhuvanesh452/open-source-docker:mqtt-fast-api-v1
+#    if we need to use image from local please comment the above one and use the image name what we have given at the time of running sudo docker build -t <image_name:tag>
+#    image: mqtt-fast-api:latest
     ports:
       - "8000:8000"
     network_mode: "host"
 
   mqtt-publisher:
-    image: mqtt-publisher:latest
+    image: bhuvanesh452/open-source-docker:mqtt-publisher-v1
+#    if we need to use image from local please comment the above one and use the image name what we have given at the time of running sudo docker build -t <image_name:tag>
+#    image: mqtt-publisher:latest
     depends_on:
       - mosquitto
     network_mode: "host"
@@ -34,7 +38,9 @@ services:
       mqtt_broker_address: 0.0.0.0
 
   mqtt-receiver:
-    image: mqtt-receiver:latest
+    image: bhuvanesh452/open-source-docker:mqtt-receiver-v1
+#    if we need to use image from local please comment the above one and use the image name what we have given at the time of running sudo docker build -t <image_name:tag>
+#    image: mqtt-receiver:latest
     depends_on:
       - mosquitto
       - mqtt-publisher
