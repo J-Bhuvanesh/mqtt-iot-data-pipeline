@@ -5,7 +5,6 @@ services:
     ports:
       - "1883:1883"
     network_mode: "host"
-
   momgodb:
     image: mongo
     ports:
@@ -18,3 +17,9 @@ services:
     ports:
       - "6379:6379"
     network_mode: "host"
+  fast-api:
+    image: mqtt-fast-api:latest
+    ports:
+      - "8000:8000"
+    network_mode: "host"
+
