@@ -1,0 +1,20 @@
+version: '3'
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    network_mode: "host"
+
+  momgodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: iot
+    network_mode: "host"
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    network_mode: "host"
