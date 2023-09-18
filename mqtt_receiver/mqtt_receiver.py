@@ -70,7 +70,9 @@ def receive_mqtt_message():
         client.loop_forever()
     except Exception as e:
 
-        print("Error with MQTT receiver. Please check the below error traceback")
+
+        print("Error with MQTT receiver. Please check the below error traceback.")
+        print(f"Host : {mqtt_broker_address}")
         print({"Error": str(e), "Error Traceback": traceback.format_exc()})
 
 

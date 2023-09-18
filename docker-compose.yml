@@ -28,6 +28,10 @@ services:
     depends_on:
       - mosquitto
     network_mode: "host"
+    environment:
+      redish_host: 0.0.0.0
+      mongo_host: 0.0.0.0
+      mqtt_broker_address: 0.0.0.0
 
   mqtt-receiver:
     image: mqtt-receiver:latest
@@ -35,6 +39,9 @@ services:
       - mosquitto
       - mqtt-publisher
     network_mode: "host"
-
+    environment:
+      redish_host: 0.0.0.0
+      mongo_host: 0.0.0.0
+      mqtt_broker_address: 0.0.0.0
 
 

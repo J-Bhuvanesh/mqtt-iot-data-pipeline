@@ -8,7 +8,7 @@ import redis
 from dotenv import load_dotenv
 
 load_dotenv()
-redish_host = os.getenv("localhost", "localhost")
+redish_host = os.getenv("redish_host", "localhost")
 mongo_host = os.getenv("mongo_host", "localhost")
 mqtt_broker_address = os.getenv("mqtt_broker_address","localhost")
 

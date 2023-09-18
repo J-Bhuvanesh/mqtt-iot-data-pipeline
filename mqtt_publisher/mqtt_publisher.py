@@ -30,7 +30,8 @@ def publish_mqtt_message():
         client.disconnect()
         print("Connection closed")
     except Exception as e:
-        print("Error with MQTT publisher. Please check the below error traceback")
+        print("Error with MQTT publisher. Please check the below error traceback.")
+        print(f"Host : {mqtt_broker_address}")
         print({"Error": str(e), "Error Traceback": traceback.format_exc()})
 
 
