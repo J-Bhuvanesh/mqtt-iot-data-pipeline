@@ -2,9 +2,15 @@ import json
 import random
 import traceback
 from datetime import datetime
-
+import os
 import pymongo
 import redis
+from dotenv import load_dotenv
+
+load_dotenv()
+redish_host = os.getenv("localhost", "localhost")
+mongo_host = os.getenv("mongo_host", "localhost")
+mqtt_broker_address = os.getenv("mqtt_broker_address","localhost")
 
 
 def generate_sensor_payload(sensor_id):
@@ -39,9 +45,7 @@ def get_sensor_data():
 
 
 def _get_mongo_connection():
-    # host_ip = "0.0.0.0"
-    host_ip = "localhost"
-    mongodb_url = f"mongodb://{host_ip}:27017"
+    mongodb_url = f"mongodb://{mongo_host}:27017"
     db_name = "iot"
     client = pymongo.MongoClient(mongodb_url)
     db = client[db_name]
@@ -49,7 +53,7 @@ def _get_mongo_connection():
 
 
 def _get_redis_conn():
-    redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+    redis_client = redis.StrictRedis(host=redish_host, port=6379, db=0)
     return redis_client
 
 

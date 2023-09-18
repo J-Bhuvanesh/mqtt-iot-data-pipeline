@@ -3,7 +3,7 @@ import traceback
 
 import paho.mqtt.client as mqtt
 
-from common import _get_mongo_connection, store_latest_readings_for_a_sensor
+from common import _get_mongo_connection, store_latest_readings_for_a_sensor, mqtt_broker_address
 
 
 def _insert_to_sensors_temperature(sensors_temperature_li):
@@ -57,7 +57,6 @@ def receive_mqtt_message():
                                                                    "value": payload['sensor_id'],
                                                                    "timestamp": payload['timestamp']})
 
-        broker_address = "localhost"
         port = 1883
         topic_sensors_temperature = "sensors_temperature"
         topic_sensors_humidity = "sensors_humidity"
@@ -65,7 +64,7 @@ def receive_mqtt_message():
         print("MQTT Client created : ", client)
         print("MQTT Client type : ", type(client))
         client.on_message = on_message
-        client.connect(broker_address, port)
+        client.connect(mqtt_broker_address, port)
         client.subscribe(topic_sensors_temperature)
         client.subscribe(topic_sensors_humidity)
         client.loop_forever()

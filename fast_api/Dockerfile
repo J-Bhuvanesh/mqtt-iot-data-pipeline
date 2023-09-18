@@ -1,16 +1,15 @@
 
 
-FROM python:3.9-slim
+FROM ubuntu:latest
+FROM python:3.8-slim
 
 WORKDIR /app
 
 COPY . .
+RUN python -m pip install --upgrade pip
 RUN rm -rf venv
-RUN python3 -m venv venv
-RUN . venv/bin/activate
-RUN pip install --upgrade pip
-RUN pip install --upgrade pip setuptools
-RUN pip install -r requirements.txt
+RUN python -m venv venv
+RUN . venv/bin/activate && pip install -r requirements.txt
 
 
 EXPOSE 8000
