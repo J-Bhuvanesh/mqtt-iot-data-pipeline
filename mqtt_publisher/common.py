@@ -1,10 +1,11 @@
-
+import json
 import random
+import traceback
 from datetime import datetime
+
 import pymongo
 import redis
-import json
-import traceback
+
 
 def generate_sensor_payload(sensor_id):
     humidity_value = round(random.uniform(20, 80), 2)
@@ -28,13 +29,13 @@ def generate_sensor_payload(sensor_id):
 
 
 def get_sensor_data():
-    humidity_payload_list=[]
-    temperature_payload_list=[]
-    for i in range(1,21):
+    humidity_payload_list = []
+    temperature_payload_list = []
+    for i in range(1, 21):
         humidity_payload, temperature_payload = generate_sensor_payload(i)
         humidity_payload_list.append(humidity_payload)
         temperature_payload_list.append(temperature_payload)
-    return humidity_payload_list,temperature_payload_list
+    return humidity_payload_list, temperature_payload_list
 
 
 def _get_mongo_connection():
@@ -44,19 +45,20 @@ def _get_mongo_connection():
     db_name = "iot"
     client = pymongo.MongoClient(mongodb_url)
     db = client[db_name]
-    return client,db
+    return client, db
+
 
 def _get_redis_conn():
     redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
     return redis_client
 
 
-def store_latest_readings_for_a_sensor(redis_key,data_list):
+def store_latest_readings_for_a_sensor(redis_key, data_list):
     try:
         print(redis_key)
         print(data_list)
         json_data = json.dumps(data_list)
-        redis_client=_get_redis_conn()
+        redis_client = _get_redis_conn()
         redis_client.lpush(redis_key, json_data)
         redis_client.ltrim(redis_key, 0, 9)
         return {}

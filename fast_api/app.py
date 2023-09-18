@@ -1,8 +1,8 @@
+import json
+
 from fastapi import FastAPI, Query, Path
 
 from common import _get_redis_conn
-
-import json
 
 app = FastAPI()
 

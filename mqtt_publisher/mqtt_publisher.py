@@ -1,9 +1,10 @@
+import json
 import time
+import traceback
 
 import paho.mqtt.client as mqtt
-import json
+
 from common import get_sensor_data
-import traceback
 
 
 def publish_mqtt_message():
@@ -12,7 +13,7 @@ def publish_mqtt_message():
         port = 1883
         topic_sensors_temperature = "sensors_temperature"
         topic_sensors_humidity = "sensors_humidity"
-        sensors_humidity_list,sensor_temperature_list=get_sensor_data()
+        sensors_humidity_list, sensor_temperature_list = get_sensor_data()
         print("Sensor data retrieved successfully")
         # sensor_temperature_list = [{"sensor_id": "1", "value": "90", "timestamp": "2023-08-20 20:00:00.000"}]
         message_of_sensor_temperature = json.dumps(sensor_temperature_list)
@@ -31,8 +32,7 @@ def publish_mqtt_message():
         print("Connection closed")
     except Exception as e:
         print("Error with MQTT publisher. Please check the below error traceback")
-        print({"Error":str(e),"Error Traceback":traceback.format_exc()})
-
+        print({"Error": str(e), "Error Traceback": traceback.format_exc()})
 
 
 while True:
